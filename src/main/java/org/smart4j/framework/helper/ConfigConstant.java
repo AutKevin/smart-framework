@@ -2,7 +2,7 @@ package org.smart4j.framework.helper;
 
 /**
  * @program: ConfigConstant
- * @description: Ïà×ƒÁ¿ÅäÖÃ
+ * @description: ç›¸è®Šé‡é…ç½®
  * @author: qiuyu
  * @create: 2018-09-10 20:44
  **/
