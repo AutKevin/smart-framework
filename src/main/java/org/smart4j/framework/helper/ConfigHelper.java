@@ -1,6 +1,4 @@
-package org.smart4j.framework.helper;/**
- * Created by Administrator on 2018/9/10.
- */
+package org.smart4j.framework.helper;
 
 import org.smart4j.framework.PropsUtil;
 
@@ -8,7 +6,7 @@ import java.util.Properties;
 
 /**
  * @program: ConfigHelper
- * @description: ÊôĞÔÎÄ¼şÖúÊÖÀà
+ * @description: å±æ€§æ–‡ä»¶åŠ©æ‰‹ç±»
  * @author: qiuyu
  * @create: 2018-09-10 20:35
  **/
@@ -17,7 +15,7 @@ public class ConfigHelper {
     private static final Properties CONFIG_PROPS = PropsUtil.loadProps(ConfigConstant.CONFIG_FILE);
 
     /**
-     * «@È¡JDBCòŒ„Ó
+     * ç²å–JDBCé©…å‹•
      * @return
      */
     public static String getJdbcDriver(){
@@ -25,7 +23,7 @@ public class ConfigHelper {
     }
 
     /**
-     * «@È¡JDBC URL
+     * ç²å–JDBC URL
      * @return
      */
     public static String getJdbcUrl(){
@@ -33,7 +31,7 @@ public class ConfigHelper {
     }
 
     /**
-     * «@È¡JDBC ÓÃ‘ôÃû
+     * ç²å–JDBC ç”¨æˆ¶å
      * @return
      */
     public static String getJdbcUsername(){
@@ -41,7 +39,7 @@ public class ConfigHelper {
     }
 
     /**
-     * «@È¡JDBC ÃÜ´a
+     * ç²å–JDBC å¯†ç¢¼
      * @return
      */
     public static String getJdbcPassword(){
@@ -49,7 +47,7 @@ public class ConfigHelper {
     }
 
     /**
-     * «@È¡‘ªÓÃ»ùµA°üÃû
+     * ç²å–æ‡‰ç”¨åŸºç¤åŒ…å
      * @return
      */
     public static String getAppBasePackage(){
@@ -57,7 +55,7 @@ public class ConfigHelper {
     }
 
     /**
-     * «@È¡‘ªÓÃJSPÂ·½
+     * ç²å–æ‡‰ç”¨JSPè·¯å¾‘
      * @return
      */
     public static String getAppJspPath(){
@@ -65,7 +63,7 @@ public class ConfigHelper {
     }
 
     /**
-     * «@È¡‘ªÓÃìo‘BÙYÔ´Â·½
+     * ç²å–æ‡‰ç”¨éœæ…‹è³‡æºè·¯å¾‘
      * @return
      */
     public static String getAppAssetPath(){

@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * @program: ClassUtil
- * @description: î¼ÓİdÆ÷
+ * @description: é¡åŠ è¼‰å™¨
  * @author: qiuyu
  * @create: 2018-09-11 19:00
  **/
@@ -17,7 +17,7 @@ public class ClassUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClassUtil.class);
 
     /**
-     * «@È¡î¼ÓİdÆ÷
+     * ç²å–é¡åŠ è¼‰å™¨
      * @return
      */
     public static ClassLoader getClassLoader(){
@@ -25,7 +25,7 @@ public class ClassUtil {
     }
 
     /**
-     * ¼Óİdî
+     * åŠ è¼‰é¡
      * @param className
      * @param isInitialized
      * @return
@@ -33,7 +33,7 @@ public class ClassUtil {
     public static Class<?> loadClass(String className,boolean isInitialized){
         Class<?> cls;
         try {
-            //classNameéîÈ«Ãû£¬isInitializedéÊÇ·ñ³õÊ¼»¯ìo‘B´ú´a‰KºÍìo‘B×Ö¶Î
+            //classNameç‚ºé¡å…¨åï¼ŒisInitializedç‚ºæ˜¯å¦åˆå§‹åŒ–éœæ…‹ä»£ç¢¼å¡Šå’Œéœæ…‹å­—æ®µ
             cls = Class.forName(className,isInitialized,getClassLoader());
         } catch (ClassNotFoundException e) {
             LOGGER.error("load class failure",e);
@@ -44,7 +44,7 @@ public class ClassUtil {
     }
 
     /**
-     * «@È¡Ö¸¶¨°üÃûÏÂµÄËùÓĞî
+     * ç²å–æŒ‡å®šåŒ…åä¸‹çš„æ‰€æœ‰é¡
      * @param packageName
      * @return
      */
