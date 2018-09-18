@@ -68,7 +68,7 @@ public class ClassUtil {
                 if (url!=null){
                     String protocol = url.getProtocol();
                     if (protocol.equals("file")){ //如果是文件
-                        String packagePath = url.getPath().replaceAll("20%"," ");
+                        String packagePath = url.getPath().replaceAll("20%"," "); //替换空格
                         addClass(classSet,packagePath,packageName);
                     }else if (protocol.equals("jar")){  //如果是jar包
                         JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();  //根据url获取jar的Connection
