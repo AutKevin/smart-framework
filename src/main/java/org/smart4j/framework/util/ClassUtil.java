@@ -72,7 +72,6 @@ public class ClassUtil {
                         addClass(classSet,packagePath,packageName);
                     }else if (protocol.equals("jar")){  //如果是jar包
                         JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();  //根据url获取jar的Connection
-                        url.openConnection();
                         if (jarURLConnection!=null){
                             JarFile jarFile = jarURLConnection.getJarFile();   //根据connection获取jar文件
                             if (jarFile!=null){
