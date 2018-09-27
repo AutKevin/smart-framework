@@ -55,20 +55,21 @@ public class ClassUtil {
     }
 
     /**
-     * 獲取指定包名下的所有類和jar包
+     * 獲取指定包名下的所有類文件/文件夹和jar包
      * @param packageName
      * @return
      */
     public static Set<Class<?>> getClassSet(String packageName){
         Set<Class<?>> classSet = new HashSet<Class<?>>();
         try {
+            //获取资源的url枚举
             Enumeration<URL> urls = getClassLoader().getResources(packageName.replace(".", "/"));
-            while(urls.hasMoreElements()){
-                URL url = urls.nextElement();
+            while(urls.hasMoreElements()){    //如果存在该包
+                URL url = urls.nextElement();  //获取包的url
                 if (url!=null){
-                    String protocol = url.getProtocol();
-                    if (protocol.equals("file")){ //如果是文件
-                        String packagePath = url.getPath().replaceAll("20%"," "); //替换空格
+                    String protocol = url.getProtocol();  //查看url的协议(file、http)
+                    if (protocol.equals("file")){ //如果是文件或者文件夹
+                        String packagePath = url.getPath().replaceAll("20%"," "); //空格的转义字符替换为空格
                         addClass(classSet,packagePath,packageName);
                     }else if (protocol.equals("jar")){  //如果是jar包
                         JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();  //根据url获取jar的Connection
@@ -120,7 +121,7 @@ public class ClassUtil {
                     doAddClass(classSet,className);
                 }
             }else {  //如果是目录
-                String subPackagePath = fileName;
+                String subPackagePath = fileName; //子文件夹名
                 if (StringUtil.isNotEmpty(packagePath)){
                     subPackagePath=packagePath+"/"+subPackagePath;  //子目录路径
                 }
