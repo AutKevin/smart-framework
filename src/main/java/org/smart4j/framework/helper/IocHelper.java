@@ -13,11 +13,11 @@ import java.util.Map;
  */
 public class IocHelper {
     static {
-        //获取所有bean类与Bean实例类之间的关系(简称BeanMap)
+        //获取所有bean类与Bean实例类之间的关系的集合(简称BeanMap)
         Map<Class<?>,Object> beanMap = BeanHelper.getBeanMap();
         if (CollectionUtil.isNotEmpty(beanMap)){
             //遍历beanMap
-            for (Map.Entry<Class<?>,Object>beanEntry:beanMap.entrySet()){
+            for (Map.Entry<Class<?>,Object> beanEntry:beanMap.entrySet()){
                 //从Bean中获取Bean类与Bean实例
                 Class<?> beanClass = beanEntry.getKey();
                 Object beanInstance = beanEntry.getValue();
