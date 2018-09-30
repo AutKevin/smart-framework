@@ -16,6 +16,7 @@ public class ReflectionUtil {
 
     /**
      * 创建实例
+     * @param cls 已经加载的类
      * @return
      */
     public static Object newInstance(Class<?> cls){
