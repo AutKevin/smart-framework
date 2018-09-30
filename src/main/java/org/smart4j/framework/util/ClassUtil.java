@@ -28,6 +28,7 @@ public class ClassUtil {
 
     /**
      * 獲取類加載器
+     * 給下面的加載類用
      * @return
      */
     public static ClassLoader getClassLoader(){
@@ -148,6 +149,7 @@ public class ClassUtil {
     public static void main(String[] args) {
         //loadClass("org.smart4j.framework.util.Cls",false);
         //Cls cls = new Cls();
+        //加載環境中的jar包中的報名
         Set<Class<?>> classSet = getClassSet("org.smart4j.framework.util");
         System.out.println(classSet);
     }
