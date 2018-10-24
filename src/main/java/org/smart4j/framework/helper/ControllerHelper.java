@@ -13,6 +13,7 @@ import java.util.Set;
 /**
  * @program: ControllerHelper
  * @description: 控制器助手类
+ * 将请求方法与请求路径映射到处理类和处理方法上
  * @author: QiuYu
  * @create: 2018-09-27 15:34
  **/
@@ -60,8 +61,8 @@ public final class ControllerHelper {
 
     /**
      * 获取Handler
-     * @param requestMethod
-     * @param requestPath
+     * @param requestMethod 请求方法
+     * @param requestPath 请求路径
      * @return
      */
     public static Handler getHandler(String requestMethod,String requestPath){
