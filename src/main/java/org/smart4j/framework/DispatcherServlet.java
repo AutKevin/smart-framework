@@ -121,8 +121,8 @@ public class DispatcherServlet extends HttpServlet {
                 }
             }
         }else{
-            LOGGER.error("Request-Handler Mapping load failure");
-            throw new RuntimeException("Request-Handler Mapping load failure");
+            LOGGER.error("Request-Handler Mapping get null by Request("+requestMethod+","+requestPath+")");
+            throw new RuntimeException("Request-Handler Mapping get null by Request("+requestMethod+","+requestPath+")");
         }
 
     }
