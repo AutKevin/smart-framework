@@ -7,6 +7,7 @@
     <groupId>org.smart4j</groupId>
     <artifactId>smart-framework</artifactId>
     <version>1.0.0</version>
+    <packaging>jar</packaging>
 
     <dependencies>
         <!--servlet-->
@@ -60,7 +61,7 @@
         </dependency>
         <!--Apache Commons Collections-->
         <dependency>
-            <groupId>commons-collections</groupId>
+            <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>4.0</version>
         </dependency>
@@ -78,4 +79,7 @@
         </dependency>
     </dependencies>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 </project>
