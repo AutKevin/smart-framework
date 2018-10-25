@@ -1,5 +1,7 @@
 package org.smart4j.framework;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smart4j.framework.bean.Data;
 import org.smart4j.framework.bean.Handler;
 import org.smart4j.framework.bean.Param;
@@ -33,6 +35,7 @@ import java.util.Map;
 
 @WebServlet(urlPatterns = "/*",loadOnStartup = 0)
 public class DispatcherServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DispatcherServlet.class);
 
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {
@@ -117,6 +120,10 @@ public class DispatcherServlet extends HttpServlet {
                     writer.close();
                 }
             }
+        }else{
+            LOGGER.error("Request-Handler Mapping load failure");
+            throw new RuntimeException("Request-Handler Mapping load failure");
         }
+
     }
 }
