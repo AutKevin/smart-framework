@@ -95,9 +95,9 @@ public class DispatcherServlet extends HttpServlet {
                 View view = (View) result;
                 String path = view.getPath();
                 if (StringUtil.isNotEmpty(path)){
-                    if (path.startsWith("/")){   //这里应该是判断是否有数据
+                    if (path.startsWith("/")){   //如果View的Path以/开头则以项目根目录为根路径
                         resp.sendRedirect(req.getContextPath()+path);
-                    } else {
+                    } else {    //如果View的Path没有以/开头,则以配置的APPJSP(/WEB-INF/view/)为根目录
                         Map<String,Object> model = view.getModel();
                         for (Map.Entry<String,Object> entry:model.entrySet()){
                             req.setAttribute(entry.getKey(),entry.getValue());
