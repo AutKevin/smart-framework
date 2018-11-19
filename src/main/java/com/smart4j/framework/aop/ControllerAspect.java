@@ -26,6 +26,7 @@ public class ControllerAspect extends AspectProxy{
         LOGGER.debug(String.format("method: %s",method.getName()));
         begin = System.currentTimeMillis();
     }
+
     /**
      * 后置增强
      * @param cls    目标类
