@@ -37,7 +37,7 @@ public abstract class AspectProxy implements Proxy{
         }finally{
             end();    //代理结束时执行方法end
         }
-        return null;
+        return result;
     }
     /*方法开始前执行*/
     public void begin(){
