@@ -82,6 +82,7 @@ public class ClassHelper {
     public static Set<Class<?>> getClassSetBySuper(Class<?> superClass){
         Set<Class<?>> classSet = new HashSet<Class<?>>();
         for (Class<?> cls:CLASS_SET){
+            /*！！！！！！！！！！重点！！！！！！！！！！获取某个基类的子类（这样可以获取AOP的所有切面）*/
             if (superClass.isAssignableFrom(cls) && !superClass.equals(cls)){  //superClass是cls的父类或接口(superClass为cls的父类/接口/本身 && superClass不等于cls)
                 classSet.add(cls);
             }
