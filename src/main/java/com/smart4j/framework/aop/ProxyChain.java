@@ -40,10 +40,16 @@ public class ProxyChain {
         return methodParams;
     }
 
+    /**
+     * 调用代理类及目标类
+     * 这个比较有意思,通过代理链的实例proxyChain不断调用此方法,每次调用都会拿出list中的一个代理执行doProxy方法
+     * @return 返回目标类执行的结果
+     * @throws Throwable
+     */
     public Object doProxyChain() throws Throwable {
         Object methodResult;
         if (proxyIndex<proxyList.size()){   //如果代理索引小于代理列表大小
-            //从列表中取出相应的Proxy对象，调用器doProxy方法
+            //从列表中取出Proxy对象，调用器doProxy方法
             methodResult = proxyList.get(proxyIndex++).doProxy(this);
         }else {    //所有代理遍历完后
             methodResult = methodProxy.invokeSuper(targetObject,methodParams);  //执行目标对象业务

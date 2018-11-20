@@ -16,14 +16,14 @@ public abstract class AspectProxy implements Proxy{
     @Override
     public Object doProxy(ProxyChain proxyChain) throws Throwable {
         Object result = null;
-
+        //获取目标类、方法、方法参数
         Class<?> cls = proxyChain.getTargetClass();
         Method method = proxyChain.getTargetMethod();
         Object[] params = proxyChain.getMethodParams();
 
         begin();    //代理开始时执行begin方法
         try {
-            if (intercept(cls,method,params)){    //是否拦截此方法
+            if (intercept(cls,method,params)){    //判断是否拦截此方法
                 before(cls,method,params);     //目标方法执行前代理方法before执行
                 result = proxyChain.doProxyChain();   //执行下一个代理
                 after(cls,method,result);    //目标方法执行后代理方法after执行
