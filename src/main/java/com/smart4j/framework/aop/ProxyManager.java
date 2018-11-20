@@ -11,6 +11,13 @@ import java.util.List;
  * 代理管理器
  */
 public class ProxyManager {
+    /**
+     * 根据目标类和代理列表创建一个代理链
+     * @param targetClass  目标类
+     * @param proxyList  代理列表
+     * @param <T> 返回一个代理链
+     * @return
+     */
     public static <T> T createProxy(final Class<T> targetClass, final List<Proxy> proxyList){
         return (T) Enhancer.create(targetClass, new MethodInterceptor() {
             @Override
