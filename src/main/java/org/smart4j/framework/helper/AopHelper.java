@@ -23,8 +23,8 @@ public class AopHelper {
             for (Map.Entry<Class<?>,List<Proxy>> targetEntry:targetMap.entrySet()){   //遍历Map<目标类,List<代理实例>>
                 Class<?> targetClass = targetEntry.getKey();   //目标类
                 List<Proxy> proxyList = targetEntry.getValue();    //代理类
-                Object proxy = ProxyManager.createProxy(targetClass,proxyList);
-                BeanHelper.setBean(targetClass,proxy);
+                Object proxy = ProxyManager.createProxy(targetClass,proxyList);   //根据目标类和代理集合创建一个代理
+                BeanHelper.setBean(targetClass,proxy);   //将Bean容器中目标类对应的实体替换成代理
             }
         }catch (Exception e){
                 LOGGER.error("aop failure",e);
@@ -32,7 +32,7 @@ public class AopHelper {
     }
 
     /**
-     * 获取所有的代理目标类集合(目标类为Controller等注解的类)
+     * 根据Aspect注解（切点）获取所有的代理目标类集合(目标类为Controller等注解的类)
      * @param aspect 代理类注解,用来指定目标类的注解 例如：@Aspect(Controller.class)
      * @return 返回Aspect注解中指定value注解的目标类  例如：带Controller注解的所有类
      * 例如Aspect(Controller.class)是指获取所有Controller注解的类
@@ -54,12 +54,17 @@ public class AopHelper {
     private static Map<Class<?>,Set<Class<?>>> createProxyMap() throws Exception{
         Map<Class<?>,Set<Class<?>>> proxyMap = new HashMap<Class<?>, Set<Class<?>>>();   //结果集<代理类,Set<代理目标类>>
 
-        //获取所有的AspectProxy的子类/本身(代理类集合),即切面,如处理Controller注解的代理类ControllerAspect!!!
+        //获取所有的AspectProxy的子类(代理类集合),即切面,
+        /*这个是入口，根据基类来查找所有的切面（代理类），获取所有的切面！！！*/
         Set<Class<?>> proxyClassSet = ClassHelper.getClassSetBySuper(AspectProxy.class);
+
         for (Class<?> proxyClass : proxyClassSet){   //遍历代理类(切面),如ControllerAspect
-            if (proxyClass.isAnnotationPresent(Aspect.class)){    //如果代理类的的注解为Aspect(也就是说代理类一定要都切点(注解)才能是切面),例如ControllerAspect代理类的注解为@Aspect(Controller.class)
-                Aspect aspect = proxyClass.getAnnotation(Aspect.class);   //获取代理类的注解
+            if (proxyClass.isAnnotationPresent(Aspect.class)){    //验证基类为AspectProxy且要有Aspect注解的才能为切面。如果代理类的的注解为Aspect(也就是说代理类一定要都切点(注解)才能是切面),例如ControllerAspect代理类的注解为@Aspect(Controller.class)
+                Aspect aspect = proxyClass.getAnnotation(Aspect.class);   //获取代理类（切面）的注解
+
+                /*根据注解获取所有的目标类*/
                 Set<Class<?>> targetClassSet = createTargetClassSet(aspect);   //获取所有的代理目标类集合
+
                 proxyMap.put(proxyClass,targetClassSet);   //加入到结果集Map<代理类,Set<代理目标类>>中
             }
         }
@@ -67,7 +72,7 @@ public class AopHelper {
     }
 
     /**
-     * 将Map<Class<?>,Set<Class<?>>> proxyMap转为Map<Class<?>,List<Proxy>> targetMap
+     * 将Map<代理类,Set<目标类>> proxyMap转为Map<目标类,List<代理类>> targetMap
      * @param proxyMap Map<代理类,Set<目标类>>
      * @return Map<目标类,List<代理类实例>>
      * @throws Exception
