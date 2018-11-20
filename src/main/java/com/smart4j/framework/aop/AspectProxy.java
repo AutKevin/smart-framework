@@ -25,10 +25,10 @@ public abstract class AspectProxy implements Proxy{
         try {
             if (intercept(cls,method,params)){    //是否拦截此方法
                 before(cls,method,params);     //目标方法执行前代理方法before执行
-                result = proxyChain.doProxyChain();   //执行目标方法
+                result = proxyChain.doProxyChain();   //执行下一个代理
                 after(cls,method,result);    //目标方法执行后代理方法after执行
             }else {
-                result = proxyChain.doProxyChain();    //执行目标方法
+                result = proxyChain.doProxyChain();    //执行下一个代理
             }
         }catch(Exception e){
             logger.error("proxy failure",e);
