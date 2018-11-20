@@ -76,13 +76,13 @@ public class ClassHelper {
 
     /**
      * 获取应用包名下某父类(接口)的所有子类(或实现类)
-     * @param superClass
+     * @param superClass 父类/接口/类本身(基本数据类型)
      * @return
      */
     public static Set<Class<?>> getClassSetBySuper(Class<?> superClass){
         Set<Class<?>> classSet = new HashSet<Class<?>>();
         for (Class<?> cls:CLASS_SET){
-            if (superClass.isAssignableFrom(cls)&&superClass.equals(cls)){
+            if (superClass.isAssignableFrom(cls)&&superClass.equals(cls)){  //cls的父类/接口/基本数据类型
                 classSet.add(cls);
             }
         }
