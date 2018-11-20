@@ -1,4 +1,4 @@
-package com.smart4j.framework.aop;
+package org.smart4j.framework.aop;
 
 import java.lang.annotation.*;
 

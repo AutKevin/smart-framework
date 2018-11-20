@@ -1,4 +1,4 @@
-package com.smart4j.framework.aop;
+package org.smart4j.framework.aop;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

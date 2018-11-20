@@ -1,9 +1,9 @@
 package org.smart4j.framework.helper;
 
-import com.smart4j.framework.aop.Aspect;
-import com.smart4j.framework.aop.AspectProxy;
-import com.smart4j.framework.aop.Proxy;
-import com.smart4j.framework.aop.ProxyManager;
+import org.smart4j.framework.aop.Aspect;
+import org.smart4j.framework.aop.AspectProxy;
+import org.smart4j.framework.aop.Proxy;
+import org.smart4j.framework.aop.ProxyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
