@@ -19,7 +19,7 @@ public class ProxyManager {
      * @return
      */
     public static <T> T createProxy(final Class<T> targetClass, final List<Proxy> proxyList){
-        return (T) Enhancer.create(targetClass, new MethodInterceptor() {
+        return (T) Enhancer.create(targetClass, new MethodInterceptor() {   //方法执行时才会执行此代码块
             @Override
             public Object intercept(Object targetObject, Method targetMethod, Object[] methodParams, MethodProxy methodProxy) throws Throwable {
                 //每个方法执行都会执行性代理链的doProxyChain方法(这里每执行一个目标类的方法,都会new一个代理链并执行该代理链)
