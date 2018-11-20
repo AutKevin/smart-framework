@@ -150,7 +150,7 @@ public class ClassUtil {
         //loadClass("org.smart4j.framework.util.Cls",false);
         //Cls cls = new Cls();
         //加載環境中的jar包中的報名
-        Set<Class<?>> classSet = getClassSet("org.smart4j.framework.util");
+        Set<Class<?>> classSet = getClassSet("org.apache.commons");
         System.out.println(classSet);
     }
 }

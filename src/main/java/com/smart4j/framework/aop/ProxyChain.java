@@ -13,10 +13,10 @@ public class ProxyChain {
     private final Class<?> targetClass;    //代理类
     private final Object targetObject;    //目标对象
     private final Method targetMethod;    //目标方法
-    private final MethodProxy methodProxy;    //方法代理
+    private final MethodProxy methodProxy;    //代理方法 - CGLib中参数
     private final Object[] methodParams;    //方法参数
 
-    private List<Proxy> proxyList = new ArrayList<Proxy>();   //代理列表
+    private List<Proxy> proxyList = new ArrayList<Proxy>();   //代理列表 - 各种代理类 例如ControllerAspect等类
     private int proxyIndex = 0;    //代理索引
 
     public ProxyChain(Class<?> targetClass, Object targetObject, Method targetMethod, MethodProxy methodProxy, Object[] methodParams, List<Proxy> proxyList) {
@@ -42,7 +42,7 @@ public class ProxyChain {
 
     /**
      * 调用代理类及目标类
-     * 这个比较有意思,通过代理链的实例proxyChain不断调用此方法,每次调用都会拿出list中的一个代理执行doProxy方法
+     * 这个比较有意思,通过代理链的实例proxyChain不断调用此方法,每次调用都会拿出list中的一个代理执行doProxy方法(doProxy方法中再用proxyChain实例调用此方法)
      * @return 返回目标类执行的结果
      * @throws Throwable
      */

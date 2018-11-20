@@ -82,7 +82,7 @@ public class ClassHelper {
     public static Set<Class<?>> getClassSetBySuper(Class<?> superClass){
         Set<Class<?>> classSet = new HashSet<Class<?>>();
         for (Class<?> cls:CLASS_SET){
-            if (superClass.isAssignableFrom(cls)&&superClass.equals(cls)){  //cls的父类/接口/基本数据类型
+            if (superClass.isAssignableFrom(cls) && !superClass.equals(cls)){  //superClass是cls的父类或接口(superClass为cls的父类/接口/本身 && superClass不等于cls)
                 classSet.add(cls);
             }
         }
@@ -90,17 +90,21 @@ public class ClassHelper {
     }
 
     /**
-     * 获取应用包名下带有注解的所有类
-     * @param annotationClass
+     * 获取应用包名下带有指定注解的所有类
+     * @param annotationClass 注解
      * @return
      */
     public static Set<Class<?>> getClassSetByAnnotation(Class<? extends Annotation> annotationClass){
         Set<Class<?>> classSet = new HashSet<Class<?>>();
         for (Class<?> cls : CLASS_SET){
-            if (cls.isAnnotationPresent(annotationClass)){
+            if (cls.isAnnotationPresent(annotationClass)){  //如果此类带有annotationClass注解
                 classSet.add(cls);
             }
         }
         return classSet;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(CLASS_SET);
     }
 }
