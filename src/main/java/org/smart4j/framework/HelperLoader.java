@@ -14,9 +14,9 @@ public class HelperLoader {
         Class<?>[] classList={
                 ClassHelper.class,
                 BeanHelper.class,
+                AopHelper.class,    //AOP容器一定要在IOC之前加载，要先把Bean容器中的实例替换成代理，再去注入才可以
                 IocHelper.class,
-                ControllerHelper.class,
-                AopHelper.class
+                ControllerHelper.class
         };
 
         for (Class<?> cls:classList){
