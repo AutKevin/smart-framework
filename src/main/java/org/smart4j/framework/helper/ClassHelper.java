@@ -104,8 +104,4 @@ public class ClassHelper {
         }
         return classSet;
     }
-
-    public static void main(String[] args) {
-        System.out.println(CLASS_SET);
-    }
 }
