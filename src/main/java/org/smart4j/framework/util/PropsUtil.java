@@ -1,4 +1,4 @@
-package org.smart4j.framework;/**
+package org.smart4j.framework.util;/**
  * Created by Administrator on 2018/8/14.
  */
 

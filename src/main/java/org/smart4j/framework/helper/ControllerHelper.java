@@ -1,9 +1,10 @@
 package org.smart4j.framework.helper;
 
-import org.smart4j.framework.ArrayUtil;
+import org.smart4j.framework.util.ArrayUtil;
 import org.smart4j.framework.annotation.Action;
 import org.smart4j.framework.bean.Handler;
 import org.smart4j.framework.bean.Request;
+import org.smart4j.framework.util.CollectionUtil;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public final class ControllerHelper {
     static{
         //获取所有Controller类
         Set<Class<?>> controllerClassSet = ClassHelper.getControllerClassSet();
-        if (org.smart4j.framework.helper.CollectionUtil.isNotEmpty(controllerClassSet)){
+        if (CollectionUtil.isNotEmpty(controllerClassSet)){
             //遍历这些Controller类
             for (Class<?> controllerClass : controllerClassSet){
                 //获取Controller类中定义的方法

@@ -9,10 +9,7 @@ import org.smart4j.framework.bean.View;
 import org.smart4j.framework.helper.BeanHelper;
 import org.smart4j.framework.helper.ConfigHelper;
 import org.smart4j.framework.helper.ControllerHelper;
-import org.smart4j.framework.util.CodecUtil;
-import org.smart4j.framework.util.JsonUtil;
-import org.smart4j.framework.util.ReflectionUtil;
-import org.smart4j.framework.util.StreamUtil;
+import org.smart4j.framework.util.*;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;

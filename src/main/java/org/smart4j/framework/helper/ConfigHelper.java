@@ -1,13 +1,8 @@
 package org.smart4j.framework.helper;
 
-import org.smart4j.framework.PropsUtil;
-import org.smart4j.framework.annotation.Controller;
-import org.smart4j.framework.annotation.Service;
-import org.smart4j.framework.util.ClassUtil;
+import org.smart4j.framework.util.PropsUtil;
 
-import java.util.HashSet;
 import java.util.Properties;
-import java.util.Set;
 
 /**
  * @program: ConfigHelper
