@@ -41,8 +41,10 @@ public class ReflectionUtil {
     public static Object invokeMethod(Object obj, Method method,Object... args){
         Object result = null;
         try {
-            method.setAccessible(true);
+            boolean originalAccess = method.isAccessible();   //先获取原本的权限
+            method.setAccessible(true);   //设为可获取
             result = method.invoke(obj,args);
+            method.setAccessible(originalAccess);  //恢复到原本的权限
         } catch (Exception e) {
             //e.printStackTrace();
             LOGGER.error("invoke method failure",e);
@@ -59,8 +61,10 @@ public class ReflectionUtil {
      */
     public static void setField(Object obj, Field field,Object value){
         try {
+            boolean originalAccess = field.isAccessible();   //先获取原本的权限
             field.setAccessible(true);
             field.set(obj,value);
+            field.setAccessible(originalAccess);  //恢复到原本的权限
         } catch (IllegalAccessException e) {
             //e.printStackTrace();
             LOGGER.error("set field failure",e);
