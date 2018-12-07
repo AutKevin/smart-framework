@@ -31,6 +31,7 @@ public class ClassUtil {
      * @return
      */
     public static ClassLoader getClassLoader(){
+        //classLoader是用来供加载类和资源使用的  !!!! 所以可以加载配置文件等!!!!!
         return Thread.currentThread().getContextClassLoader();
     }
 
