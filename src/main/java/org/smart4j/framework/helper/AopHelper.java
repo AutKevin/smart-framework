@@ -1,5 +1,8 @@
 package org.smart4j.framework.helper;
 
+import com.smart4j.framework.transaction.TransactionProxy;
+import org.smart4j.framework.annotation.Service;
+import org.smart4j.framework.annotation.Transaction;
 import org.smart4j.framework.aop.Aspect;
 import org.smart4j.framework.aop.AspectProxy;
 import org.smart4j.framework.aop.Proxy;
@@ -53,22 +56,32 @@ public class AopHelper {
      */
     private static Map<Class<?>,Set<Class<?>>> createProxyMap() throws Exception{
         Map<Class<?>,Set<Class<?>>> proxyMap = new HashMap<Class<?>, Set<Class<?>>>();   //结果集<代理类,Set<代理目标类>>
+        addAspectProxy(proxyMap);   //添加普通切面
+        addTransactionProxy(proxyMap);   //添加事务代理
+        return proxyMap;
+    }
 
+    private static void addAspectProxy(Map<Class<?>,Set<Class<?>>> proxyMap){
         //获取所有的AspectProxy的子类(代理类集合),即切面,
         /*这个是入口，根据基类来查找所有的切面（代理类），获取所有的切面！！！*/
         Set<Class<?>> proxyClassSet = ClassHelper.getClassSetBySuper(AspectProxy.class);
-
         for (Class<?> proxyClass : proxyClassSet){   //遍历代理类(切面),如ControllerAspect
             if (proxyClass.isAnnotationPresent(Aspect.class)){    //验证基类为AspectProxy且要有Aspect注解的才能为切面。如果代理类的的注解为Aspect(也就是说代理类一定要都切点(注解)才能是切面),例如ControllerAspect代理类的注解为@Aspect(Controller.class)
                 Aspect aspect = proxyClass.getAnnotation(Aspect.class);   //获取代理类（切面）的注解
-
                 /*根据注解获取所有的目标类*/
                 Set<Class<?>> targetClassSet = createTargetClassSet(aspect);   //获取所有的代理目标类集合
-
                 proxyMap.put(proxyClass,targetClassSet);   //加入到结果集Map<代理类,Set<代理目标类>>中
             }
         }
-        return proxyMap;
+    }
+
+    /**
+     * 获取Transaction的class - targets映射关系
+     * @param proxyMap
+     */
+    private static void addTransactionProxy(Map<Class<?>,Set<Class<?>>> proxyMap) {
+        Set<Class<?>> serviceClassSet = ClassHelper.getClassSetByAnnotation(Service.class);  //获取所有目标类
+        proxyMap.put(TransactionProxy.class,serviceClassSet);   //代理类为Transaction注解
     }
 
     /**
