@@ -35,13 +35,13 @@ public class TransactionProxy implements Proxy{
             try {
 
                 DBHelper.beginTransaction();
-                LOGGER.debug("begin transaction");
+                LOGGER.debug("TransactionProxy - begin transaction");
                 result = proxyChain.doProxyChain();
                 DBHelper.commitTransaction();
-                LOGGER.debug("commit transaction");
+                LOGGER.debug("TransactionProxy - commit transaction");
             }catch (Exception e){
                 DBHelper.rollbackTransaction();
-                LOGGER.debug("rollback transaction");
+                LOGGER.debug("TransactionProxy - rollback transaction");
                 throw  e;
             }finally {
                 FLAG_HOLDER.remove();
