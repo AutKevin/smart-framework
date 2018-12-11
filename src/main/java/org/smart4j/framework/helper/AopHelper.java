@@ -61,6 +61,10 @@ public class AopHelper {
         return proxyMap;
     }
 
+    /**
+     * 添加切面代理
+     * @param proxyMap
+     */
     private static void addAspectProxy(Map<Class<?>,Set<Class<?>>> proxyMap){
         //获取所有的AspectProxy的子类(代理类集合),即切面,
         /*这个是入口，根据基类来查找所有的切面（代理类），获取所有的切面！！！*/
@@ -76,7 +80,7 @@ public class AopHelper {
     }
 
     /**
-     * 获取Transaction的class - targets映射关系
+     * 添加事务代理 - 获取Transaction的class - targets映射关系
      * @param proxyMap
      */
     private static void addTransactionProxy(Map<Class<?>,Set<Class<?>>> proxyMap) {
