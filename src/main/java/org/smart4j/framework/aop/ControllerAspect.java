@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 
 /**
  * 拦截所有Controller方法
+ * 这个切面写在框架里用不了,因为不会加载这个类到CLASS_SET
  */
 @Aspect(Controller.class)
 public class ControllerAspect extends AspectProxy{

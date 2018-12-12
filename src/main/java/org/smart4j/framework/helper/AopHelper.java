@@ -1,8 +1,7 @@
 package org.smart4j.framework.helper;
 
-import com.smart4j.framework.transaction.TransactionProxy;
+import org.smart4j.framework.transaction.TransactionProxy;
 import org.smart4j.framework.annotation.Service;
-import org.smart4j.framework.annotation.Transaction;
 import org.smart4j.framework.aop.Aspect;
 import org.smart4j.framework.aop.AspectProxy;
 import org.smart4j.framework.aop.Proxy;
