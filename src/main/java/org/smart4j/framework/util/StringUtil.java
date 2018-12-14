@@ -26,7 +26,17 @@ public class StringUtil {
         return !isEmpty(str);
     }
 
+    /**
+     * 分隔符
+     */
+    public static final String SEPARATOR = String .valueOf((char)29);
+
     public static String[] splitString(String str,String spliter){
         return str.split(spliter);
+    }
+
+    /*测试*/
+    public static void main(String[] args) {
+        System.out.println(SEPARATOR);
     }
 }

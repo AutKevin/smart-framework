@@ -2,7 +2,11 @@ package org.smart4j.framework.bean;
 
 import org.smart4j.framework.util.CastUtil;
 import org.smart4j.framework.util.CollectionUtil;
+import org.smart4j.framework.util.StringUtil;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,27 +17,79 @@ import java.util.Map;
  */
 
 public class Param {
-    private Map<String,Object> paramMap;
+    private List<FormParam> formParamList;
+    private List<FileParam> fileParamList;
 
-    public Param(Map<String, Object> paramMap) {
-        this.paramMap = paramMap;
+    public Param(List<FormParam> formParamList) {
+        this.formParamList = formParamList;
+    }
+
+    public Param(List<FormParam> formParamList, List<FileParam> fileParamList) {
+        this.formParamList = formParamList;
+        this.fileParamList = fileParamList;
     }
 
     /**
-     * 根据参数名获取long型参数值
-     * @param name
+     * 获取请求参数映射
      * @return
      */
-    public long getLong(String name){
-        return CastUtil.castLong(paramMap.get(name));
+    public Map<String,Object> getFieldMap(){
+        Map<String,Object> fieldMap = new HashMap<String,Object>();
+        if (CollectionUtil.isNotEmpty(formParamList)){
+            for (FormParam formParam:formParamList){
+                String fieldName = formParam.getFieldName();   //表单参数名
+                Object fieldValue = formParam.getFieldValue();   //表单参数值
+                if (fieldMap.containsKey(fieldName)){   //如果已经有此参数名
+                    fieldValue = fieldMap.get(fieldName) + StringUtil.SEPARATOR + fieldValue;  // 旧的数据<-->新的数据作为value
+                }
+                fieldMap.put(fieldName,fieldValue);
+            }
+        }
+        return fieldMap;
     }
 
     /**
-     * 获取所有字段信息
+     * 获取上传文件映射
+     */
+    public Map<String,List<FileParam>> getFileMap(){
+        Map<String,List<FileParam>> fileMap = new HashMap<String,List<FileParam>>();
+
+        if (CollectionUtil.isNotEmpty(fileMap)){
+            for (FileParam fileParam:fileParamList){    //遍历文件参数
+                String fieldName = fileParam.getFieldName();    //获取表单文件字段名
+                List<FileParam> fileParamList;
+                if (fileMap.containsKey(fieldName)){    //如果Map已经存在
+                    fileParamList = fileMap.get(fieldName);   //获取Map中的值
+                }else{
+                    fileParamList = new ArrayList<FileParam>();  //否则,新建一个值
+                }
+                fileParamList.add(fileParam);   //值
+                fileMap.put(fieldName,fileParamList);   //放入到表单文件字段名,List<FileParam>的映射中
+            }
+        }
+        return fileMap;
+    }
+
+    /**
+     * 获取所有上传文件
+     * @param fieldName 表单文件字段名
      * @return
      */
-    public Map<String,Object> getMap(){
-        return paramMap;
+    public List<FileParam> getFileList(String fieldName){
+        return getFileMap().get(fieldName);
+    }
+
+    /**
+     * 获取唯一上传文件
+     * @param fieldName 表单文件字段名
+     * @return
+     */
+    public FileParam getFile(String fieldName){
+        List<FileParam> fileParamList = getFileList(fieldName);
+        if (CollectionUtil.isNotEmpty(fileParamList) && fileParamList.size() ==1){
+            return fileParamList.get(0);
+        }
+        return null;
     }
 
     /**
@@ -41,7 +97,82 @@ public class Param {
      * @return
      */
     public boolean isEmpty(){
-        return CollectionUtil.isEmpty(paramMap);
+        return CollectionUtil.isEmpty(formParamList) && CollectionUtil.isNotEmpty(fileParamList);
     }
+
+    /**
+     * 根据参数名获取String型参数值
+     * @param name
+     * @return
+     */
+    public String getString(String name){
+        return CastUtil.castString(getFieldMap().get(name));
+    }
+
+    /**
+     * 根据参数名获取Double型参数值
+     * @param name
+     * @return
+     */
+    public Double getDouble(String name){
+        return CastUtil.castDouble(getFieldMap().get(name));
+    }
+
+    /**
+     * 根据参数名获取Long型参数值
+     * @param name
+     * @return
+     */
+    public long getLong(String name){
+        return CastUtil.castLong(getFieldMap().get(name));
+    }
+    /**
+     * 根据参数名获取int型参数值
+     * @param name
+     * @return
+     */
+    public int getInt(String name){
+        return CastUtil.castInt(getFieldMap().get(name));
+    }
+    /**
+     * 根据参数名获取boolean型参数值
+     * @param name
+     * @return
+     */
+    public boolean getBoolean(String name){
+        return CastUtil.castBoolean(getFieldMap().get(name));
+    }
+
+
+    /*//未重构参数封装类 - 用一个简单的Map做为键值对映射
+    private Map<String,Object> paramMap;
+    public Param(Map<String, Object> paramMap) {
+        this.paramMap = paramMap;
+    }
+
+    *//**
+     * 根据参数名获取long型参数值
+     * @param name
+     * @return
+     *//*
+    public long getLong(String name){
+        return CastUtil.castLong(paramMap.get(name));
+    }
+
+    *//**
+     * 获取所有字段信息
+     * @return
+     *//*
+    public Map<String,Object> getMap(){
+        return paramMap;
+    }
+
+    *//**
+     * 验证参数是否为空
+     * @return
+     *//*
+    public boolean isEmpty(){
+        return CollectionUtil.isEmpty(paramMap);
+    }*/
 }
 
