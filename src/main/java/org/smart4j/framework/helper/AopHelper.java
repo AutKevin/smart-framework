@@ -42,6 +42,7 @@ public class AopHelper {
     private static Set<Class<?>> createTargetClassSet(Aspect aspect){
         Set<Class<?>> targetClassSet = new HashSet<Class<?>>();
         Class<? extends Annotation> annotation = aspect.value();   //获取值(也是注解)
+        /*!!!!!!!!!!!!!!!!!!!!!!如果Aspect的value为Aspect注解,那么将会出现死循环,代理给代理代理.!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
         if (annotation!=null && !annotation.equals(Aspect.class)){   //获取的value注解不为null，且注解不为Aspect
             targetClassSet.addAll(ClassHelper.getClassSetByAnnotation(annotation));   //加入所有value(切点)指定的注解的类
         }
