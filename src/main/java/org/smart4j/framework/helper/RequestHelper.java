@@ -30,6 +30,7 @@ public class RequestHelper {
 
     /**
      * 获取Form表单普通参数并放入List<FormParam>中
+     * 适用于application/x-www-form-urlencoded
      * @param request
      * @return List<FormParam>
      */
@@ -53,6 +54,7 @@ public class RequestHelper {
                         }
                     }
                     fieldValue = sb.toString();
+
                 }
                 formParamList.add(new FormParam(fieldName,fieldValue));   //将参数键值对加入List参数列表中去
             }
@@ -62,12 +64,14 @@ public class RequestHelper {
 
     /**
      * 获取参数流并放入List<FormParam>中
+     * 适用于application/json，text/xml，multipart/form-data文本流或者大文件形式提交的请求或者xml等形式的报文
      * @param request
      * @return
      * @throws IOException
      */
     private static List<FormParam> parseInputStream(HttpServletRequest request) throws IOException {
         List<FormParam> formParamList = new ArrayList<FormParam>();
+
         String body = CodecUtil.decodeURL(StreamUtil.getString(request.getInputStream()));
         if (StringUtil.isNotEmpty(body)){
             String[] kvs = StringUtil.splitString(body,"&");
