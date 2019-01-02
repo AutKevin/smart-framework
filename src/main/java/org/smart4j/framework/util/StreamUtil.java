@@ -43,7 +43,7 @@ public class StreamUtil {
     public static void copyStream(InputStream inputStream, OutputStream outputStream){
         try {
             int length;
-            byte[] buffer = new byte[4*1027];
+            byte[] buffer = new byte[4*1024];
             while((length = inputStream.read(buffer,0,buffer.length)) != -1){
                 outputStream.write(buffer,0,length);
             }

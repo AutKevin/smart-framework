@@ -12,14 +12,12 @@ import org.smart4j.framework.bean.FormParam;
 import org.smart4j.framework.bean.Param;
 import org.smart4j.framework.util.CollectionUtil;
 import org.smart4j.framework.util.FileUtil;
+import org.smart4j.framework.util.StreamUtil;
 import org.smart4j.framework.util.StringUtil;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,11 +40,11 @@ public final class UploadHelper {
      * 初始化
      */
     public static void init(ServletContext servletContext){
-        File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+        File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");   //获取work目录
         servletFileUpload = new ServletFileUpload(new DiskFileItemFactory(DiskFileItemFactory.DEFAULT_SIZE_THRESHOLD,repository));
         int uploadLimit = ConfigHelper.getAppUploadLimit();  //获取文件上传限制默认为10
         if (uploadLimit != 0){
-            servletFileUpload.setFileSizeMax(uploadLimit*1024*1024);
+            servletFileUpload.setFileSizeMax(uploadLimit*1024*1024);   //设置单文件最大大小
         }
     }
 
@@ -59,9 +57,10 @@ public final class UploadHelper {
 
     /**
      * 创建请求对象
+     * 将request转换为Param参数
      * @return
      */
-    public static Param createParam(HttpServletRequest request){
+    public static Param createParam(HttpServletRequest request) throws IOException {
         List<FormParam> formParamList = new ArrayList<FormParam>();
         List<FileParam> fileParamList = new ArrayList<FileParam>();
 
@@ -93,11 +92,47 @@ public final class UploadHelper {
         } catch (FileUploadException e) {
             LOGGER.error("create param failure",e);
             throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return new Param(formParamList,fileParamList);
+    }
+
+
+    /**
+     * 上传文件
+     * @param basePath
+     * @param fileParam
+     */
+    public static void uploadFile(String basePath,FileParam fileParam){
+        try{
+            if (fileParam != null){
+                String filePath = basePath + fileParam.getFileName();   //路径+文件名
+                FileUtil.createFile(filePath);  //创建文件
+                InputStream inputStream = new BufferedInputStream(fileParam.getInputStream());  //获取文件的输入流
+                OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(filePath));   //获取输出流
+                StreamUtil.copyStream(inputStream,outputStream);   //输入流拷贝到输出流中
+            }
+        } catch (FileNotFoundException e) {
+            LOGGER.error("upload file failure",e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 批量上传文件
+     * @param basePath
+     * @param fileParamList
+     */
+    public static void uploadFile(String basePath,List<FileParam> fileParamList){
+        try {
+            if (CollectionUtil.isNotEmpty(fileParamList)){
+                for (FileParam fileParam : fileParamList){
+                    uploadFile(basePath,fileParam);
+                }
+            }
+        }catch (Exception e){
+            LOGGER.error("upload file failure",e);
+            throw new RuntimeException(e);
+        }
+
     }
 }

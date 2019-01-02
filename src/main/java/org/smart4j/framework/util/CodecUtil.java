@@ -34,7 +34,7 @@ public class CodecUtil {
     /**
      * 将URL解码
      */
-    public static String dencodeURL(String source){
+    public static String decodeURL(String source){
         String target;
         try {
             target = URLDecoder.decode(source,"utf-8");
