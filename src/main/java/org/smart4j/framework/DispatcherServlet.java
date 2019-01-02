@@ -66,9 +66,9 @@ public class DispatcherServlet extends HttpServlet {
 
             Param param;
             if (UploadHelper.isMultipart(req)){   //如果是multipart/form-data stream
-                param = UploadHelper.createParam(req);
-            }else{   //如果是普通表单提交
-                param = RequestHelper.createParam(req);   //普通表单方式
+                param = UploadHelper.createParam(req);   //multipart方式
+            }else{   //如果是非multipart方式提交(即application/x-www-form-urlencoded，application/json，text/xml)
+                param = RequestHelper.createParam(req);   //非multipart表单方式
             }
 
             /*
