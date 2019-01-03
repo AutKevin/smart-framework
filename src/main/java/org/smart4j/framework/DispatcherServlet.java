@@ -44,7 +44,7 @@ public class DispatcherServlet extends HttpServlet {
         //注册处理静态资源的默认Servlet
         ServletRegistration defaultServlet = servletContext.getServletRegistration("default");
         defaultServlet.addMapping(ConfigHelper.getAppAssetPath()+"*");
-        //初始化上传文件大小
+        //初始化上传文件大小，以及超过最大大小存放的目录
         UploadHelper.init(servletContext);
     }
 

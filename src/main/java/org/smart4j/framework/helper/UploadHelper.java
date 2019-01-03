@@ -40,11 +40,22 @@ public final class UploadHelper {
      * 初始化
      */
     public static void init(ServletContext servletContext){
-        File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");   //获取work目录
-        servletFileUpload = new ServletFileUpload(new DiskFileItemFactory(DiskFileItemFactory.DEFAULT_SIZE_THRESHOLD,repository));
-        int uploadLimit = ConfigHelper.getAppUploadLimit();  //获取文件上传限制默认为10
+        /*获取tomcat的work目录*/
+        File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+
+        /**
+         * DiskFileItemFactory构造的两个参数
+         *  第一个参数：sizeThreadHold - 设置缓存(内存)保存多少字节数据，默认为10240字节，即10K
+         *    如果一个文件没有大于10K，则直接使用内存直接保存成文件就可以了。
+         *    如果一个文件大于10K，就需要将文件先保存到临时目录中去。
+         *  第二个参数 File 是指临时目录位置 - 可以不用tomcat的work目录可以用任意一个目录
+         */
+        DiskFileItemFactory fileItemFactory = new DiskFileItemFactory(DiskFileItemFactory.DEFAULT_SIZE_THRESHOLD, repository);
+        servletFileUpload = new ServletFileUpload(fileItemFactory);
+
+        int uploadLimit = ConfigHelper.getAppUploadLimit();  //获取文件上传限制默认为10（M）
         if (uploadLimit != 0){
-            servletFileUpload.setFileSizeMax(uploadLimit*1024*1024);   //设置单文件最大大小
+            servletFileUpload.setFileSizeMax(uploadLimit*1024*1024);   //设置单文件最大大小为10M
         }
     }
 
@@ -65,14 +76,16 @@ public final class UploadHelper {
         List<FileParam> fileParamList = new ArrayList<FileParam>();
 
         try{
+            /*解析request*/
             Map<String,List<FileItem>> fileItemListMap = servletFileUpload.parseParameterMap(request);   //将request转换为Map
             if (CollectionUtil.isNotEmpty(fileItemListMap)){
+                //遍历Map集合，一个表单名可能有多个文件
                 for (Map.Entry<String,List<FileItem>> fileItemListEntry : fileItemListMap.entrySet()){
                     String fieldName = fileItemListEntry.getKey();    //获取表单字段名
-                    List<FileItem> fileItemList = fileItemListEntry.getValue();
+                    List<FileItem> fileItemList = fileItemListEntry.getValue();   //文件集合
 
                     if (CollectionUtil.isNotEmpty(fileItemListMap)){
-                        for (FileItem fileItem:fileItemList){
+                        for (FileItem fileItem:fileItemList){   //遍历文件集合
                             if (fileItem.isFormField()){   //如果是表单字段
                                 String fieldValue = fileItem.getString("UTF-8");
                                 formParamList.add(new FormParam(fieldName,fieldValue));
