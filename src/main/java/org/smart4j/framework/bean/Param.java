@@ -55,7 +55,7 @@ public class Param {
      */
     public Map<String,List<FileParam>> getFileMap(){
         Map<String,List<FileParam>> fileMap = new HashMap<String,List<FileParam>>();
-        if (CollectionUtil.isNotEmpty(fileMap)){
+        if (CollectionUtil.isNotEmpty(fileParamList)){  //判断全局变量、不是局部变量
             for (FileParam fileParam:fileParamList){    //遍历文件参数
                 String fieldName = fileParam.getFieldName();    //获取表单文件字段名
                 List<FileParam> fileParamList;  //上传的多个文件
@@ -98,7 +98,7 @@ public class Param {
      * @return
      */
     public boolean isEmpty(){
-        return CollectionUtil.isEmpty(formParamList) && CollectionUtil.isNotEmpty(fileParamList);
+        return CollectionUtil.isEmpty(formParamList) && CollectionUtil.isEmpty(fileParamList);
     }
 
     /**
