@@ -50,28 +50,30 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //获取请求方法与请求路径
-        String requestMethod = req.getMethod().toLowerCase();
-        String requestPath = req.getPathInfo();
+        ServletHelper.init(req,resp);   //使每个线程都有独立的request和response
+        try {
+            //获取请求方法与请求路径
+            String requestMethod = req.getMethod().toLowerCase();
+            String requestPath = req.getPathInfo();
 
-        if (requestPath.equals("\favicon.ico")){
-            return ;
-        }
-        //获取Action处理器
-        Handler handler= ControllerHelper.getHandler(requestMethod,requestPath);
-        if(handler!=null){
-            //获取Controller类机器Bean实例
-            Class<?> controllerClass = handler.getControllerClass();
-            Object controllerBean = BeanHelper.getBean(controllerClass);
-
-            Param param;
-            if (UploadHelper.isMultipart(req)){   //如果是multipart/form-data stream
-                param = UploadHelper.createParam(req);   //multipart方式
-            }else{   //如果是非multipart方式提交(即application/x-www-form-urlencoded，application/json，text/xml)
-                param = RequestHelper.createParam(req);   //非multipart表单方式
+            if (requestPath.equals("\favicon.ico")) {
+                return;
             }
+            //获取Action处理器
+            Handler handler = ControllerHelper.getHandler(requestMethod, requestPath);
+            if (handler != null) {
+                //获取Controller类机器Bean实例
+                Class<?> controllerClass = handler.getControllerClass();
+                Object controllerBean = BeanHelper.getBean(controllerClass);
 
-            /*
+                Param param;
+                if (UploadHelper.isMultipart(req)) {   //如果是multipart/form-data stream
+                    param = UploadHelper.createParam(req);   //multipart方式
+                } else {   //如果是非multipart方式提交(即application/x-www-form-urlencoded，application/json，text/xml)
+                    param = RequestHelper.createParam(req);   //非multipart表单方式
+                }
+
+            /*将一下代码放入RequestHelper中去
             //创建请求参数对象
             Map<String,Object> paramMap = new HashMap<String, Object>();
             Enumeration<String> paramNames = req.getParameterNames();
@@ -98,29 +100,31 @@ public class DispatcherServlet extends HttpServlet {
             Param param = new Param(paramMap);
             */
 
-            Object result = null;
-            //调用Action方法
-            Method actionMethod = handler.getActionMethod();
+                Object result = null;
+                //调用Action方法
+                Method actionMethod = handler.getActionMethod();
             /*优化没有参数的话不需要写参数*/
-            if (param.isEmpty()){  //如果没有参数
-                result = ReflectionUtil.invokeMethod(controllerBean,actionMethod);  //就不传参数
-            }else{  //有参数
-                result = ReflectionUtil.invokeMethod(controllerBean,actionMethod,param);  //传参数
-            }
+                if (param.isEmpty()) {  //如果没有参数
+                    result = ReflectionUtil.invokeMethod(controllerBean, actionMethod);  //就不传参数
+                } else {  //有参数
+                    result = ReflectionUtil.invokeMethod(controllerBean, actionMethod, param);  //传参数
+                }
 
-            //处理Action方法返回值
-            if (result instanceof View){
-                //返回JSP页面
-                handleViewResult((View) result, req, resp);
-            }else if (result instanceof Data){
-                //返回Json数据
-                handleDataResult((Data) result, resp);
+                //处理Action方法返回值
+                if (result instanceof View) {
+                    //返回JSP页面
+                    handleViewResult((View) result, req, resp);
+                } else if (result instanceof Data) {
+                    //返回Json数据
+                    handleDataResult((Data) result, resp);
+                }
+            } else {
+                LOGGER.error("Request-Handler Mapping get null by Request(" + requestMethod + "," + requestPath + ")");
+                throw new RuntimeException("Request-Handler Mapping get null by Request(" + requestMethod + "," + requestPath + ")");
             }
-        }else{
-            LOGGER.error("Request-Handler Mapping get null by Request("+requestMethod+","+requestPath+")");
-            throw new RuntimeException("Request-Handler Mapping get null by Request("+requestMethod+","+requestPath+")");
+        }finally {
+            ServletHelper.destroy();
         }
-
     }
 
     /**
