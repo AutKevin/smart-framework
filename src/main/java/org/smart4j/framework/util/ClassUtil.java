@@ -70,7 +70,7 @@ public class ClassUtil {
                 if (url!=null){
                     String protocol = url.getProtocol();  //查看url的协议(file、http)
                     if (protocol.equals("file")){ //如果是文件或者文件夹
-                        String packagePath = url.getPath().replaceAll("20%"," "); //空格的转义字符替换为空格
+                        String packagePath = url.getPath().replaceAll("%20"," "); //空格的转义字符替换为空格，这是一个java历史悠久的bug
                         addClass(classSet,packagePath,packageName);
                     }else if (protocol.equals("jar")){  //如果是jar包
                         JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();  //根据url获取jar的Connection
@@ -113,6 +113,9 @@ public class ClassUtil {
                 return (file.isFile()&&file.getName().endsWith(".class"))||file.isDirectory();
             }
         });
+        if (files == null){
+            new Exception("加载类集合为空");
+        }
         for (File file:files){
             String fileName = file.getName();   //获取文件名
             if (file.isFile()){  //如果是文件
