@@ -113,8 +113,9 @@ public class ClassUtil {
                 return (file.isFile()&&file.getName().endsWith(".class"))||file.isDirectory();
             }
         });
-        if (files == null){
-            new Exception("加载类集合为空");
+        if (files == null){   //完善框架，有时候不报错反而不利于查找问题
+            LOGGER.error("加载"+packageName+"包下的类集合为空");
+            new Exception("加载"+packageName+"包下的类集合为空");
         }
         for (File file:files){
             String fileName = file.getName();   //获取文件名
